@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product API Reference</title>
+<style>
+  :root {
+    --bg: #f8f9fa;
+    --surface: #ffffff;
+    --border: #e1e4e8;
+    --text: #24292e;
+    --muted: #586069;
+    --accent: #0366d6;
+    --accent-light: #f1f8ff;
+    --code-bg: #f6f8fa;
+    --success: #28a745;
+    --warning: #f66a0a;
+    --danger: #d73a49;
+    --heading-font: 'Georgia', serif;
+    --body-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --mono-font: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0d1117; --surface: #161b22; --border: #30363d;
+      --text: #c9d1d9; --muted: #8b949e; --accent: #58a6ff;
+      --accent-light: #1c2c3e; --code-bg: #1c2128;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--body-font);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding: 2rem 1rem;
+    direction: ltr;
+  }
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    background: var(--surface);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    padding: 2.5rem 3rem;
+  }
+  .toc {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.5rem;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 2rem;
+  }
+  .toc h2 { font-size: 1rem; margin-bottom: .5rem; border: none; margin-top: 0; }
+  .toc ul { padding-left: 1.2rem; line-height: 1.8; }
+  .toc a { color: var(--accent); text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+
+  h1 {
+    font-family: var(--heading-font);
+    font-size: 2.2rem;
+    border-bottom: 3px solid var(--accent);
+    padding-bottom: .5rem;
+    margin-bottom: 1.5rem;
+  }
+  h2 {
+    font-size: 1.5rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: .4rem;
+  }
+  h3 {
+    font-size: 1.15rem;
+    color: var(--accent);
+    margin-top: 1.8rem;
+    margin-bottom: .75rem;
+  }
+  p { margin-bottom: 1rem; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  blockquote {
+    border-left: 4px solid var(--accent);
+    background: var(--accent-light);
+    padding: .75rem 1rem;
+    font-style: italic;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+  }
+  code {
+    background: var(--code-bg);
+    border-radius: 4px;
+    padding: .15em .4em;
+    font-family: var(--mono-font);
+    font-size: .9em;
+  }
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    overflow-x: auto;
+    margin: 1rem 0;
+    direction: ltr;
+    text-align: left;
+  }
+  pre code {
+    background: none;
+    padding: 0;
+    font-size: .9em;
+    line-height: 1.5;
+    direction: ltr;
+    text-align: left;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: .92rem;
+  }
+  th {
+    background: var(--code-bg);
+    font-weight: 600;
+    text-align: left;
+    padding: .6rem 1rem;
+    border: 1px solid var(--border);
+  }
+  td {
+    padding: .5rem 1rem;
+    border: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: var(--bg); }
+  ul, ol { padding-left: 1.5rem; line-height: 2; margin-bottom: 1rem; }
+
+  /* Method badges */
+  .badge {
+    display: inline-block;
+    padding: .2em .55em;
+    border-radius: 4px;
+    font-family: var(--mono-font);
+    font-size: .8rem;
+    font-weight: 700;
+    margin-right: .4rem;
+    vertical-align: middle;
+  }
+  .get    { background: #d1fae5; color: #065f46; }
+  .post   { background: #dbeafe; color: #1e40af; }
+  .put    { background: #fef3c7; color: #92400e; }
+  .patch  { background: #ede9fe; color: #5b21b6; }
+  .delete { background: #fee2e2; color: #991b1b; }
+
+  .endpoint-block {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+    background: var(--surface);
+    box-shadow: 0 1px 3px rgba(0,0,0,.04);
+  }
+  .endpoint-block h3 { margin-top: 0; }
+
+  /* Explanation section */
+  .explanation {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 3px solid var(--accent);
+    direction: rtl;
+  }
+  .explanation h1 { direction: rtl; }
+  .explanation h2 { direction: rtl; }
+  .explanation h3 { direction: rtl; }
+  .explanation p { direction: rtl; text-align: right; }
+  .explanation ul { direction: rtl; text-align: right; }
+
+  .card {
+    background: var(--accent-light);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 6px;
+    padding: 1rem 1.5rem;
+    margin: 1rem 0;
+    direction: rtl;
+  }
+  .card.warning { border-left-color: var(--warning); background: #fff8f0; }
+  .card.success { border-left-color: var(--success); background: #f0fff4; }
+  .card.danger  { border-left-color: var(--danger);  background: #fff0f0; }
+
+  .field-type {
+    display: inline-block;
+    background: var(--code-bg);
+    color: var(--muted);
+    font-size: .78rem;
+    padding: .1em .4em;
+    border-radius: 3px;
+    font-family: var(--mono-font);
+    margin-left: .3rem;
+  }
+  .required-badge {
+    display: inline-block;
+    background: #fee2e2;
+    color: #991b1b;
+    font-size: .75rem;
+    padding: .1em .4em;
+    border-radius: 3px;
+    font-weight: 600;
+  }
+
+  @media print {
+    .toc { display: none; }
+    body { background: white; color: black; }
+    .container { border: none; box-shadow: none; }
+  }
+  @media (max-width: 640px) {
+    .container { padding: 1.5rem 1.2rem; }
+    h1 { font-size: 1.6rem; }
+    table { font-size: .8rem; }
+    td, th { padding: .4rem .6rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ═══════════════════════════════════════════
+       PART 1 — API REFERENCE (from the MD)
+  ═══════════════════════════════════════════ -->
+
+  <h1>Product API Reference</h1>
+
+  <div class="toc">
+    <h2>תוכן עניינים</h2>
+    <ul>
+      <li><a href="#schema">Schema — שדות המוצר</a></li>
+      <li><a href="#endpoints">Endpoints</a></li>
+      <li><a href="#get-list">GET /entities/Product — רשימה</a></li>
+      <li><a href="#post-create">POST /entities/Product — יצירה</a></li>
+      <li><a href="#delete-many">DELETE /entities/Product — מחיקה מרובה</a></li>
+      <li><a href="#post-bulk">POST /entities/Product/bulk — יצירה מרובה</a></li>
+      <li><a href="#put-bulk">PUT /entities/Product/bulk — עדכון מרובה</a></li>
+      <li><a href="#patch-many">PATCH /entities/Product/update-many — עדכון לפי שאילתה</a></li>
+      <li><a href="#get-single">GET /entities/Product/{id} — קבלת רשומה</a></li>
+      <li><a href="#put-single">PUT /entities/Product/{id} — עדכון רשומה</a></li>
+      <li><a href="#delete-single">DELETE /entities/Product/{id} — מחיקת רשומה</a></li>
+      <li><a href="#put-restore">PUT /entities/Product/{id}/restore — שחזור</a></li>
+      <li><a href="#explanation">הסבר מפורט על הקובץ</a></li>
+    </ul>
+  </div>
+
+  <!-- ─── Schema ─── -->
+  <h2 id="schema">Schema — שדות המוצר</h2>
+  <p>כל רשומת <code>Product</code> כוללת את השדות הבאים:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Field</th>
+        <th>Type</th>
+        <th>Required</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><code>itemId</code></td><td>string</td><td><span class="required-badge">Yes</span></td><td>Product ID from supplier</td></tr>
+      <tr><td><code>category</code></td><td>string</td><td></td><td>Main category in Hebrew</td></tr>
+      <tr><td><code>subCategory</code></td><td>string</td><td></td><td>Subcategory in Hebrew</td></tr>
+      <tr><td><code>name</code></td><td>string</td><td><span class="required-badge">Yes</span></td><td>Product name in Hebrew</td></tr>
+      <tr><td><code>itemModel</code></td><td>string</td><td></td><td>Model number</td></tr>
+      <tr><td><code>manufactModel</code></td><td>string</td><td></td><td>Manufacturer's model number</td></tr>
+      <tr><td><code>manufactName</code></td><td>string</td><td></td><td>Manufacturer name</td></tr>
+      <tr><td><code>manufacturerURL</code></td><td>string</td><td></td><td>Manufacturer or product page URL</td></tr>
+      <tr><td><code>costPrice</code></td><td>number</td><td></td><td>Supplier cost price</td></tr>
+      <tr><td><code>regularPrice</code></td><td>number</td><td></td><td>Calculated retail price</td></tr>
+      <tr><td><code>inventory</code></td><td>number</td><td></td><td><strong>100</strong> = in stock &nbsp;|&nbsp; <strong>-100</strong> = out of stock</td></tr>
+      <tr><td><code>paymentsNoCredit</code></td><td>number</td><td></td><td>—</td></tr>
+      <tr><td><code>deliveryTime</code></td><td>number</td><td></td><td>—</td></tr>
+      <tr><td><code>maxPayments</code></td><td>number</td><td></td><td>—</td></tr>
+      <tr><td><code>warranty</code></td><td>number</td><td></td><td>Warranty duration in months</td></tr>
+      <tr><td><code>warrantyText</code></td><td>string</td><td></td><td>e.g. <code>שנה אחת אחריות</code></td></tr>
+      <tr><td><code>supplierName</code></td><td>enum</td><td></td><td><code>מור לוי</code>, <code>אול אין וואן</code>, <code>קומפיוטר סי דאטה</code>, <code>טונוס</code>, <code>מתקינט</code>, <code>מפעיל</code>, <code>טכנורצף</code></td></tr>
+      <tr><td><code>images</code></td><td>string</td><td></td><td>Image URLs separated by <code>;</code></td></tr>
+      <tr><td><code>מפרט</code></td><td>string</td><td></td><td>HTML specification table</td></tr>
+      <tr><td><code>סטטוס מוצר</code></td><td>boolean</td><td></td><td>האם המוצר פעיל</td></tr>
+      <tr><td><code>updated_at</code></td><td>string</td><td></td><td>Timestamp of last price/inventory update</td></tr>
+      <tr><td><code>friendlyurl</code></td><td>string</td><td></td><td>Friendly URL slug (same as itemId)</td></tr>
+      <tr><td><code>name_parsed</code></td><td>boolean</td><td></td><td>Whether the product name has been parsed</td></tr>
+      <tr><td><code>שם מוצר מנותח</code></td><td>string</td><td></td><td>Parsed product name</td></tr>
+      <tr><td><code>name_committed</code></td><td>boolean</td><td></td><td>Whether the parsed name has been committed</td></tr>
+      <tr><td><code>last_price</code></td><td>string</td><td></td><td>Last known price (text)</td></tr>
+      <tr><td><code>last_price_date</code></td><td>string</td><td></td><td>Date of last known price</td></tr>
+      <tr><td><code>on_the_way_inventory</code></td><td><code>true</code> / <code>false</code> / <code>null</code></td><td></td><td>Is the product incoming / on the way</td></tr>
+      <tr><td colspan="4" style="background:var(--code-bg);font-weight:600;color:var(--muted);">GMF Fields — Google Manufacturer Feed / מפרט מובנה</td></tr>
+      <tr><td><code>GMF_יצרן</code></td><td>string</td><td></td><td>יצרן</td></tr>
+      <tr><td><code>GMF_סוג זיכרון ראם</code></td><td>string</td><td></td><td>סוג RAM</td></tr>
+      <tr><td><code>GMF_ערכת שבבים</code></td><td>string</td><td></td><td>Chipset</td></tr>
+      <tr><td><code>GMF_תושבת מעבד</code></td><td>string</td><td></td><td>CPU Socket</td></tr>
+      <tr><td><code>GMF_מהירות זיכרון ראם</code></td><td>string</td><td></td><td>RAM Speed</td></tr>
+      <tr><td><code>GMF_דור אחסון</code></td><td>string</td><td></td><td>Storage Generation (e.g. NVMe Gen4)</td></tr>
+      <tr><td><code>GMF_נפח זיכרון גרפי</code></td><td>string</td><td></td><td>VRAM</td></tr>
+      <tr><td><code>GMF_הספק</code></td><td>string</td><td></td><td>PSU Wattage</td></tr>
+      <tr><td><code>GMF_ספק</code></td><td>string</td><td></td><td>ספק (GMF)</td></tr>
+      <tr><td><code>GMF_תצורה</code></td><td>string</td><td></td><td>Configuration</td></tr>
+      <tr><td><code>GMF_סוג פאנל</code></td><td>string</td><td></td><td>Panel type (IPS / VA / OLED...)</td></tr>
+      <tr><td><code>GMF_שטוח / קעור</code></td><td>string</td><td></td><td>Flat / Curved</td></tr>
+      <tr><td><code>GMF_דור WIFI</code></td><td>string</td><td></td><td>WiFi Generation</td></tr>
+      <tr><td><code>GMF_קצב העברת נתונים</code></td><td>string</td><td></td><td>Data transfer rate</td></tr>
+      <tr><td><code>GMF_כמות פורטים</code></td><td>string</td><td></td><td>Number of ports</td></tr>
+      <tr><td><code>GMF_סלולרי (LTE)</code></td><td>string</td><td></td><td>LTE support</td></tr>
+      <tr><td><code>GMF_סוג חיבור</code></td><td>string</td><td></td><td>Connection type</td></tr>
+      <tr><td><code>GMF_כולל / לא כולל מסך מגע</code></td><td>string</td><td></td><td>Touchscreen</td></tr>
+      <tr><td><code>GMF_משך וסוג אחריות</code></td><td>string</td><td></td><td>Warranty duration &amp; type</td></tr>
+      <tr><td><code>GMF_גודל</code></td><td>string</td><td></td><td>Size</td></tr>
+      <tr><td><code>GMF_גודל מסך</code></td><td>string</td><td></td><td>Screen size</td></tr>
+      <tr><td><code>GMF_נפח זיכרון ראם</code></td><td>string</td><td></td><td>RAM capacity</td></tr>
+      <tr><td><code>GMF_נפח אחסון</code></td><td>string</td><td></td><td>Storage capacity</td></tr>
+      <tr><td><code>GMF_מעבד</code></td><td>string</td><td></td><td>CPU</td></tr>
+      <tr><td><code>GMF_מעבד גרפי</code></td><td>string</td><td></td><td>GPU</td></tr>
+      <tr><td><code>GMF_כולל / לא כולל מע' הפעלה</code></td><td>string</td><td></td><td>OS included?</td></tr>
+      <tr><td><code>GMF_תקן</code></td><td>string</td><td></td><td>Standard</td></tr>
+      <tr><td><code>GMF_סוג מוצר</code></td><td>string</td><td></td><td>Product type</td></tr>
+      <tr><td><code>GMF_תקציב</code></td><td>string</td><td></td><td>Budget tier</td></tr>
+      <tr><td colspan="4" style="background:var(--code-bg);font-weight:600;color:var(--muted);">Metadata Fields</td></tr>
+      <tr><td><code>id</code></td><td>string</td><td></td><td>Unique record identifier (Base44 internal)</td></tr>
+      <tr><td><code>created_date</code></td><td>string</td><td></td><td>Record creation timestamp</td></tr>
+      <tr><td><code>updated_date</code></td><td>string</td><td></td><td>Record last update timestamp</td></tr>
+      <tr><td><code>created_by_id</code></td><td>string</td><td></td><td>ID of the user who created the record</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ─── Endpoints ─── -->
+  <h2 id="endpoints">Endpoints</h2>
+
+  <div class="endpoint-block" id="get-list">
+    <h3><span class="badge get">GET</span> /entities/Product</h3>
+    <p>List Product records with optional filtering, sorting, and pagination.</p>
+    <table>
+      <thead><tr><th>Parameter</th><th>Location</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>q</code></td><td>query</td><td>JSON query filter, e.g. <code>{"status":"active"}</code></td></tr>
+        <tr><td><code>limit</code></td><td>query</td><td>Maximum number of records to return</td></tr>
+        <tr><td><code>skip</code></td><td>query</td><td>Number of records to skip (pagination)</td></tr>
+        <tr><td><code>sort_by</code></td><td>query</td><td>Field name to sort by. Prefix with <code>-</code> for descending, e.g. <code>-created_date</code></td></tr>
+      </tbody>
+    </table>
+    <pre><code class="language-javascript">const records = await base44.entities.Product.list();</code></pre>
+  </div>
+
+  <div class="endpoint-block" id="post-create">
+    <h3><span class="badge post">POST</span> /entities/Product</h3>
+    <p>Create a single Product record.</p>
+    <pre><code class="language-javascript">const record = await base44.entities.Product.create({
+  // your data
+});</code></pre>
+  </div>
+
+  <div class="endpoint-block" id="delete-many">
+    <h3><span class="badge delete">DELETE</span> /entities/Product</h3>
+    <p>Delete multiple Product records matching a query filter.</p>
+    <blockquote>⚠️ WARNING: passing an empty <code>{}</code> filter deletes ALL records.</blockquote>
+    <pre><code class="language-javascript">await base44.entities.Product.deleteMany({
+  itemId: "Example itemId"
+});</code></pre>
+  </div>
+
+  <div class="endpoint-block" id="post-bulk">
+    <h3><span class="badge post">POST</span> /entities/Product/bulk</h3>
+    <p>Bulk create multiple Product records in a single request.</p>
+    <pre><code class="language-javascript">const records = await base44.entities.Product.bulkCreate([
+  { /* record 1 */ },
+  { /* record 2 */ },
+]);</code></pre>
+  </div>
+
+  <div class="endpoint-block" id="put-bulk">
+    <h3><span class="badge put">PUT</span> /entities/Product/bulk</h3>
+    <p>Bulk update Product records.</p>
+    <blockquote>⚠️ Bulk-update is <strong>not available via SDK</strong> — use the REST API directly.</blockquote>
+  </div>
+
+  <div class="endpoint-block" id="patch-many">
+    <h3><span class="badge patch">PATCH</span> /entities/Product/update-many</h3>
+    <p>Update many Product records matching a query.</p>
+    <blockquote>⚠️ Update-many is <strong>not available via SDK</strong> — use the REST API directly.</blockquote>
+  </div>
+
+  <div class="endpoint-block" id="get-single">
+    <h3><span class="badge get">GET</span> /entities/Product/{Product_id}</h3>
+    <p>Get a single Product record by its internal ID.</p>
+    <pre><code class="language-javascript">const record = await base44.entities.Product.get(recordId);</code></pre>
+  </div>
+
+  <div class="endpoint-block" id="put-single">
+    <h3><span class="badge put">PUT</span> /entities/Product/{Product_id}</h3>
+    <p>Update a specific Product record by ID.</p>
+    <pre><code class="language-javascript">const record = await base44.entities.Product.update(recordId, {
+  // fields to update
+});</code></pre>
+  </div>
+
+  <div class="endpoint-block" id="delete-single">
+    <h3><span class="badge delete">DELETE</span> /entities/Product/{Product_id}</h3>
+    <p>Delete a specific Product record by ID.</p>
+    <pre><code class="language-javascript">await base44.entities.Product.delete(recordId);</code></pre>
+  </div>
+
+  <div class="endpoint-block" id="put-restore">
+    <h3><span class="badge put">PUT</span> /entities/Product/{Product_id}/restore</h3>
+    <p>Restore a previously deleted Product record.</p>
+    <pre><code class="language-javascript">const record = await base44.entities.Product.restore(recordId);</code></pre>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════
+       PART 2 — DETAILED EXPLANATION (Hebrew)
+  ═══════════════════════════════════════════ -->
+
+  <div class="explanation" id="explanation">
+
+    <h1>הסבר מפורט: מה זה הקובץ הזה?</h1>
+
+    <h2 id="what-is-this">מה זה בכלל?</h2>
+    <p>
+      הקובץ הזה הוא <strong>תיעוד API</strong> של ה-<strong>entity</strong> בשם <code>Product</code>
+      בתוך פלטפורמת <strong>Base44</strong> — פלטפורמת no-code/low-code ישראלית שמאפשרת בניית אפליקציות
+      עם בסיס נתונים מובנה ו-SDK מוכן לשימוש.
+    </p>
+    <p>
+      בפועל, ה-<code>Product</code> הוא <strong>טבלת מוצרים</strong> של חנות אונליין (ככל הנראה של Homebat / Konimbo),
+      שמגיעה מספקים שונים. הקובץ מתאר:
+    </p>
+    <ul>
+      <li>אילו שדות יש לכל מוצר (Schema)</li>
+      <li>אילו פעולות API אפשר לבצע עליו (Endpoints)</li>
+      <li>איך לקרוא לאותן פעולות דרך ה-SDK של Base44</li>
+    </ul>
+
+    <h2 id="what-is-entity">מה זה "Entity" ב-Base44?</h2>
+    <p>
+      Entity הוא בעצם <strong>מודל נתונים / טבלה</strong> בבסיס הנתונים של Base44.
+      כל entity מקבל אוטומטית את כל ה-CRUD endpoints (Create, Read, Update, Delete)
+      + endpoints מיוחדים כמו bulk ו-restore.
+      ה-SDK של Base44 מאפשר לגשת אליהם בצורה נוחה מ-JavaScript/TypeScript.
+    </p>
+    <div class="card">
+      <strong>בקצרה:</strong> <code>base44.entities.Product</code> זה כמו ORM — אובייקט שמאפשר
+      לשאול ולשנות את טבלת המוצרים בלי לכתוב SQL.
+    </div>
+
+    <h2 id="schema-explained">מה יש בשדות ה-Schema?</h2>
+    <p>השדות מחולקים לכמה קבוצות לוגיות:</p>
+
+    <h3>1. זיהוי המוצר</h3>
+    <ul>
+      <li><code>itemId</code> — ה-ID שמגיע מהספק (חובה). זה המפתח שמחבר בין המוצר בחנות לבין הספק.</li>
+      <li><code>id</code> — ה-ID הפנימי של Base44 (נוצר אוטומטית).</li>
+      <li><code>friendlyurl</code> — ה-slug של המוצר ב-URL (זהה ל-itemId).</li>
+    </ul>
+
+    <h3>2. מידע בסיסי על המוצר</h3>
+    <ul>
+      <li><code>name</code> — שם המוצר בעברית (חובה).</li>
+      <li><code>category</code> / <code>subCategory</code> — קטגוריה וקטגורית משנה בעברית.</li>
+      <li><code>itemModel</code> / <code>manufactModel</code> — מספרי דגם (של הספק ושל היצרן).</li>
+      <li><code>manufactName</code> / <code>manufacturerURL</code> — מידע על היצרן.</li>
+      <li><code>images</code> — רשימת URLs של תמונות, מופרדות בנקודה-פסיק (<code>;</code>).</li>
+      <li><code>מפרט</code> — טבלת HTML עם המפרט הטכני של המוצר.</li>
+    </ul>
+
+    <h3>3. מחיר ומלאי</h3>
+    <ul>
+      <li><code>costPrice</code> — מחיר עלות מהספק.</li>
+      <li><code>regularPrice</code> — מחיר קמעונאי מחושב (מחיר מכירה).</li>
+      <li><code>inventory</code> — <strong>100</strong> = במלאי, <strong>-100</strong> = אזל מהמלאי. (ערך בינארי, לא כמות אמיתית)</li>
+      <li><code>on_the_way_inventory</code> — האם המוצר בדרך (הזמנה בתהליך).</li>
+      <li><code>last_price</code> / <code>last_price_date</code> — המחיר האחרון הידוע + תאריכו (היסטוריה).</li>
+    </ul>
+
+    <h3>4. תנאי מכירה</h3>
+    <ul>
+      <li><code>warranty</code> — אחריות בחודשים.</li>
+      <li><code>warrantyText</code> — טקסט חופשי לאחריות.</li>
+      <li><code>paymentsNoCredit</code> / <code>maxPayments</code> — תנאי תשלום.</li>
+      <li><code>deliveryTime</code> — זמן אספקה.</li>
+    </ul>
+
+    <h3>5. ספקים</h3>
+    <p>
+      השדה <code>supplierName</code> הוא enum עם הספקים הקיימים במערכת:
+      <code>מור לוי</code>, <code>אול אין וואן</code>, <code>קומפיוטר סי דאטה</code>,
+      <code>טונוס</code>, <code>מתקינט</code>, <code>מפעיל</code>, <code>טכנורצף</code>.
+      זה אומר שמוצרים שונים מגיעים ממקורות שונים — ויש כנראה תהליכי סנכרון אוטומטיים מכל ספק.
+    </p>
+
+    <h3>6. עיבוד שם המוצר (AI Pipeline)</h3>
+    <div class="card success">
+      <strong>תובנה חשובה:</strong> יש כאן pipeline של עיבוד שמות:
+      <ul>
+        <li><code>name</code> — השם הגולמי שמגיע מהספק.</li>
+        <li><code>name_parsed</code> — האם כבר עברנו parsing על השם.</li>
+        <li><code>שם מוצר מנותח</code> — השם לאחר parsing / ניתוח.</li>
+        <li><code>name_committed</code> — האם אישרנו את השם המנותח ופרסמנו אותו.</li>
+      </ul>
+      זה רומז לתהליך אוטומטי (כנראה AI) שמנתח שמות מוצרים גולמיים ומייצר שמות נקיים יותר.
+    </div>
+
+    <h3>7. שדות GMF (Google Manufacturer Feed)</h3>
+    <p>
+      כל השדות שמתחילים ב-<code>GMF_</code> הם מפרטים טכניים מובנים שמיועדים ל-
+      <strong>Google Manufacturer Feed</strong> — ממשק שמאפשר לשלוח מידע עשיר על מוצרים לגוגל
+      לצורך Google Shopping. הם מכסים:
+    </p>
+    <ul>
+      <li>מפרט חומרה: מעבד, GPU, RAM, אחסון, Chipset</li>
+      <li>תצוגה: גודל מסך, סוג פאנל, שטוח/קעור</li>
+      <li>קישוריות: WiFi, LTE, סוג חיבור, כמות פורטים</li>
+      <li>כללי: גודל, אחריות, OS, סוג מוצר, תקציב</li>
+    </ul>
+
+    <h2 id="endpoints-explained">אילו פעולות אפשר לבצע? (Endpoints)</h2>
+
+    <h3>קריאת נתונים</h3>
+    <div class="card">
+      <strong>GET /entities/Product</strong> — שאיבת רשימת מוצרים עם:<br>
+      <ul>
+        <li><strong>פילטור</strong> (<code>q</code>): JSON שמסנן רשומות, למשל <code>{"supplierName":"טונוס"}</code></li>
+        <li><strong>pagination</strong> (<code>limit</code> + <code>skip</code>): לדפדוף בין עמודים</li>
+        <li><strong>מיון</strong> (<code>sort_by</code>): למשל <code>-regularPrice</code> = מחיר יורד</li>
+      </ul>
+    </div>
+    <div class="card">
+      <strong>GET /entities/Product/{id}</strong> — שאיבת מוצר בודד לפי ה-ID הפנימי של Base44.
+    </div>
+
+    <h3>יצירת נתונים</h3>
+    <div class="card">
+      <strong>POST /entities/Product</strong> — יצירת מוצר אחד.<br>
+      <strong>POST /entities/Product/bulk</strong> — יצירת מספר מוצרים בבת אחת (יעיל לסנכרון ספקים).
+    </div>
+
+    <h3>עדכון נתונים</h3>
+    <div class="card">
+      <strong>PUT /entities/Product/{id}</strong> — עדכון מוצר בודד לפי ID.<br>
+      <strong>PUT /entities/Product/bulk</strong> — עדכון מרובה (דרך REST בלבד, לא SDK).<br>
+      <strong>PATCH /entities/Product/update-many</strong> — עדכון כל הרשומות שעומדות בתנאי שאילתה (דרך REST בלבד).
+    </div>
+
+    <h3>מחיקה ושחזור</h3>
+    <div class="card warning">
+      <strong>DELETE /entities/Product</strong> — מחיקה לפי שאילתה. <strong>⚠️ זהירות: {} ריק = מוחק הכל!</strong><br>
+      <strong>DELETE /entities/Product/{id}</strong> — מחיקת מוצר בודד.<br>
+      <strong>PUT /entities/Product/{id}/restore</strong> — שחזור מוצר שנמחק (Base44 שומר מחוקים).
+    </div>
+
+    <h2 id="what-you-get">מה התוצאה שמתקבלת מהקריאה?</h2>
+    <p>
+      קריאת <code>list()</code> מחזירה <strong>מערך של אובייקטים</strong>, כל אחד מהם רשומת מוצר
+      עם כל השדות שהוגדרו ב-Schema. קריאת <code>get(id)</code> מחזירה אובייקט בודד.
+      קריאות <code>create</code> / <code>update</code> מחזירות את הרשומה המעודכנת.
+    </p>
+    <p>דוגמה לאובייקט שמוחזר:</p>
+    <pre><code class="language-javascript">{
+  "id": "abc123",            // Base44 internal ID
+  "itemId": "BT-9900X",     // Supplier ID
+  "name": "מחשב נייד ASUS VivoBook 15",
+  "regularPrice": 3299,
+  "costPrice": 2800,
+  "inventory": 100,          // 100 = in stock
+  "supplierName": "טונוס",
+  "category": "מחשבים ניידים",
+  "warranty": 24,
+  "images": "https://img1.jpg;https://img2.jpg",
+  "GMF_מעבד": "Intel Core i5-12th Gen",
+  "GMF_נפח זיכרון ראם": "16GB",
+  "GMF_נפח אחסון": "512GB SSD",
+  "סטטוס מוצר": true,
+  "updated_at": "2026-06-28T14:30:00Z",
+  "created_date": "2025-01-15T09:00:00Z"
+}</code></pre>
+
+    <h2 id="flow">מה הזרימה הכללית?</h2>
+    <p>מה שאפשר להבין מהמבנה הזה:</p>
+    <ol style="line-height:2.2">
+      <li><strong>ספקים שולחים נתוני מוצר</strong> → נשמרים ב-Base44 עם <code>itemId</code> של הספק.</li>
+      <li><strong>מחירים ומלאי מתעדכנים</strong> דרך <code>updated_at</code> ו-<code>last_price</code>.</li>
+      <li><strong>Pipeline של שמות</strong>: שם גולמי → parsed → committed.</li>
+      <li><strong>מפרט GMF</strong> מאפשר לשלוח את הנתונים לגוגל שופינג.</li>
+      <li><strong>הקובץ הזה</strong> מאפשר לקוד בצד ה-client (Next.js / React) לשאוב ולעדכן מוצרים.</li>
+    </ol>
+
+    <h2 id="key-takeaways">מה אמורים להבין מהקובץ?</h2>
+
+    <div class="card success">
+      <strong>✅ השדות החשובים ביותר לעבוד איתם:</strong>
+      <ul>
+        <li><code>itemId</code> — המזהה הנדרש ליצירה, ה-link לספק</li>
+        <li><code>inventory</code> — 100 / -100 בלבד, לא כמות</li>
+        <li><code>regularPrice</code> — המחיר שמוצג ללקוח</li>
+        <li><code>סטטוס מוצר</code> — boolean אם המוצר מוצג בחנות</li>
+        <li><code>images</code> — URLs מופרדים ב-<code>;</code></li>
+      </ul>
+    </div>
+
+    <div class="card warning">
+      <strong>⚠️ נקודות שצריך לשים לב אליהן:</strong>
+      <ul>
+        <li>שני endpoints לא זמינים דרך SDK: <code>bulk PUT</code> ו-<code>update-many PATCH</code> — חייבים REST API.</li>
+        <li>מחיקה עם <code>{}</code> ריק = מוחק את כל המוצרים.</li>
+        <li><code>מפרט</code> מכיל HTML גולמי — צריך <code>dangerouslySetInnerHTML</code> בריאקט.</li>
+        <li>שדות בעברית (<code>סטטוס מוצר</code>, <code>מפרט</code>, <code>שם מוצר מנותח</code>) — צריך quotation בג'אווסקריפט.</li>
+      </ul>
+    </div>
+
+    <div class="card danger">
+      <strong>🔴 הגבלות ידועות:</strong>
+      <ul>
+        <li>אין תיעוד על rate limits.</li>
+        <li>אין תיעוד על authentication — כנראה מנוהל ברמת ה-Base44 app.</li>
+        <li><code>inventory</code> הוא ערך בינארי בלבד — אין מידע על כמות מדויקת במלאי.</li>
+      </ul>
+    </div>
+
+  </div><!-- end .explanation -->
+
+</div><!-- end .container -->
+</body>
+</html>
